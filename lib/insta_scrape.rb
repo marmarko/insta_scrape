@@ -100,7 +100,11 @@ module InstaScrape
         date = page.find('time')['datetime']
         username = page.first('article header div div a')['title']
         hi_res_image = page.all('img').last['src']
-        likes = reverse_human_to_number(page.first('div section span span')['innerHTML'])
+        likes = begin
+          reverse_human_to_number(page.first('div section span span')['innerHTML'])
+        rescue
+          0
+        end
         info = InstaScrape::InstagramPost.new(post[:link], post[:image],
                                               date: date,
                                               text: post[:text],
