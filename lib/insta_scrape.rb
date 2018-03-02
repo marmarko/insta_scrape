@@ -94,7 +94,7 @@ module InstaScrape
         text: post.find('img')['alt'] }
     end
 
-    posts.first(9).each do |post|
+    posts.each do |post|
       if include_meta_data
         visit(post[:link])
         date = page.find('time')['datetime']
