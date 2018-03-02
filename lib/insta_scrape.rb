@@ -30,7 +30,7 @@ module InstaScrape
 
   # long scrape a hashtag
   def self.long_scrape_user_posts(username, scrape_length, include_meta_data: false)
-    @posts = []
+     @posts = []
     long_scrape_user_posts_method(username, scrape_length, include_meta_data: include_meta_data)
   end
 
@@ -143,7 +143,6 @@ module InstaScrape
   # scrape posts
   def self.scrape_posts(include_meta_data:)
     check_account(page)
-    page.find('a', text: 'Load more', exact: true).click
     max_iteration = 10
     iteration = 0
     while iteration < max_iteration
@@ -162,7 +161,11 @@ module InstaScrape
 
   def self.long_scrape_posts(scrape_length_in_seconds, include_meta_data:)
     check_account(page)
-    page.find('a', text: 'Load more', exact: true).click
+    begin
+      page.find('a', text: 'Load more', exact: true).click
+    rescue
+    end
+    puts '3'
     max_iteration = (scrape_length_in_seconds / 0.3)
     iteration = 0
     @loader = '.'
@@ -230,6 +233,8 @@ module InstaScrape
     else
       false
     end
+    rescue Capybara::ElementNotFound => e
+      false
   end
 
   def self.reverse_human_to_number(number)
